@@ -139,43 +139,14 @@ def excel_converter_section():
                        
                        
                         
-                        # Display the processed dataframe
-                        st.subheader("📊 Processed Data - AGADIR Sheet")
-                        st.dataframe(df)
                         
-                        # Display QUALI NV data if available
-                        if df_quali is not None:
-                            st.subheader("📈 QUALI NV Sheet Data")
-                            st.dataframe(df_quali)
-                            st.info(f"QUALI NV sheet contains {len(df_quali)} rows with sales performance metrics")
-                        else:
-                            st.warning("⚠️ QUALI NV sheet data could not be loaded")
+                        
+                        
                         
                         # Add button to send data to Google Sheets
-                        st.subheader("Send to Google Sheets")
-                        if st.button("📤 Send Data to Google Sheets", type="primary"):
-                            with st.spinner("Uploading to Google Sheets..."):
-                                try:
-                                    # Initialize Google Sheets service and upload
-                                    gs_service = GoogleSheetsService()
-                                    upload_result = gs_service.upload_excel_to_google_sheets()
-                                    if upload_result:
-                                        st.success("✅ Data uploaded to Google Sheets successfully!")
-                                        st.info("📊 Data has been sent to your Google Sheet: 'Suivi Test' worksheet")
-                                    else:
-                                        st.error("❌ Failed to upload to Google Sheets. Check your google.json credentials.")
-                                except Exception as e:
-                                    st.error(f"❌ Google Sheets upload failed: {str(e)}")
                         
-                        # Provide download button
-                        st.subheader("Download File")
-                        with open(output_path, "rb") as f:
-                            st.download_button(
-                                label="📥 Download Processed Excel File",
-                                data=f,
-                                file_name=output_filename,
-                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                            )
+                        
+                        
                     else:
                         st.error("Output file was not created. Please check the logs.")
                 else:
@@ -207,38 +178,40 @@ def excel_converter_section():
         
         col1, col2 = st.columns(2)
         
-        with col1:
-            if st.button("📤 Send AGADIR Data to Google Sheets", type="primary", key="upload_agadir"):
-                with st.spinner("Uploading AGADIR data to Google Sheets..."):
-                    try:
-                        # Initialize Google Sheets service and upload AGADIR data
-                        gs_service = GoogleSheetsService()
-                        upload_result = gs_service.upload_excel_to_google_sheets()
-                        if upload_result:
-                            st.success("✅ AGADIR data uploaded to Google Sheets successfully!")
-                            st.info("📊 AGADIR data has been sent to your Google Sheet: 'Suivi Test' worksheet")
-                        else:
-                            st.error("❌ Failed to upload AGADIR data to Google Sheets. Check your google.json credentials.")
-                    except Exception as e:
-                        st.error(f"❌ AGADIR Google Sheets upload failed: {str(e)}")
-        
-        with col2:
-            if hasattr(st.session_state, 'quali_nv_data') and st.session_state.quali_nv_data is not None:
-                if st.button("📈 Send QUALI NV Data to Google Sheets", type="secondary", key="upload_quali"):
-                    with st.spinner("Uploading QUALI NV data to Google Sheets..."):
-                        try:
-                            # Initialize Google Sheets service and upload QUALI NV data
-                            gs_service = GoogleSheetsService()
-                            upload_result = gs_service.upload_quali_nv_to_google_sheets()
-                            if upload_result:
-                                st.success("✅ QUALI NV data uploaded to Google Sheets successfully!")
-                                st.info("📊 QUALI NV data has been sent to your Google Sheet: 'QUALI NV' worksheet")
-                            else:
-                                st.error("❌ Failed to upload QUALI NV data to Google Sheets. Check your google.json credentials.")
-                        except Exception as e:
-                            st.error(f"❌ QUALI NV Google Sheets upload failed: {str(e)}")
-            else:
-                st.info("ℹ️ QUALI NV data not available for upload")
+        # Combined upload button for both AGADIR and QUALI NV data
+        if st.button("🚀 Send All Data to Google Sheets", type="primary", key="upload_all_data"):
+            with st.spinner("Uploading all data to Google Sheets..."):
+                try:
+                    gs_service = GoogleSheetsService()
+                    agadir_success = False
+                    quali_success = False
+                    uploaded_sheets = []
+                    
+                    # Upload AGADIR data
+                    agadir_result = gs_service.upload_excel_to_google_sheets()
+                    if agadir_result:
+                        agadir_success = True
+                        uploaded_sheets.append("AGADIR → 'Suivi Test' worksheet")
+                    
+                    # Upload QUALI NV data if available
+                    if hasattr(st.session_state, 'quali_nv_data') and st.session_state.quali_nv_data is not None:
+                        quali_result = gs_service.upload_quali_nv_to_google_sheets()
+                        if quali_result:
+                            quali_success = True
+                            uploaded_sheets.append("QUALI NV → 'QUALI NV' worksheet")
+                    
+                    # Single informative message
+                    if agadir_success and (quali_success or not hasattr(st.session_state, 'quali_nv_data')):
+                        sheets_info = " | ".join(uploaded_sheets)
+                        st.success(f"🎉 Successfully uploaded all data to Google Sheets: {sheets_info}")
+                    elif agadir_success or quali_success:
+                        sheets_info = " | ".join(uploaded_sheets)
+                        st.warning(f"⚠️ Partially uploaded: {sheets_info}. Some data failed to upload.")
+                    else:
+                        st.error("❌ Failed to upload data to Google Sheets. Check your google.json credentials.")
+                        
+                except Exception as e:
+                    st.error(f"❌ Google Sheets upload failed: {str(e)}")
         
         # Provide download button
         if st.session_state.output_path and os.path.exists(st.session_state.output_path):
