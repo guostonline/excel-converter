@@ -53,18 +53,20 @@ class GoogleSheetsService:
             st.error(f"Authentication failed: {str(e)}")
             return False
     
-    def upload_quali_nv_to_google_sheets(self, excel_path="excel/finale_jour.xlsx", spreadsheet_id="1cRNqohML-mZ2mMqXIfQlPPDQUmRGLmRzDfp3j0wpte4", worksheet_name="quali SOM VMM", credentials_path=st.secrets["google_service_account"]):
+    def upload_quali_nv_to_google_sheets(self, excel_path="excel/finale_jour.xlsx", spreadsheet_id="1cRNqohML-mZ2mMqXIfQlPPDQUmRGLmRzDfp3j0wpte4", worksheet_name="quali SOM VMM"):
         """
         Upload QUALI NV sheet data to specific Google Sheets ID and worksheet
         """
         try:
-            # Load credentials from google.json file
-            if not os.path.exists(credentials_path):
-                print("Error: google.json file not found. Please add your service account credentials.")
+            # Get credentials from Streamlit secrets
+            try:
+                credentials_dict = dict(st.secrets["google_service_account"])
+            except KeyError:
+                print("Error: google_service_account not found in secrets. Please add your service account credentials to secrets.toml")
                 return False
             
             # Authenticate with service account
-            if not self.authenticate_with_service_account(credentials_path):
+            if not self.authenticate_with_service_account(credentials_dict):
                 print("Error: Failed to authenticate with Google Sheets")
                 return False
             
@@ -208,18 +210,20 @@ class GoogleSheetsService:
             print(f"Error getting spreadsheet URL: {str(e)}")
             return None
     
-    def upload_excel_to_google_sheets(self, excel_path="excel/finale_jour.xlsx", spreadsheet_id="1cRNqohML-mZ2mMqXIfQlPPDQUmRGLmRzDfp3j0wpte4", worksheet_name="Suivi Test", credentials_path="google.json"):
+    def upload_excel_to_google_sheets(self, excel_path="excel/finale_jour.xlsx", spreadsheet_id="1cRNqohML-mZ2mMqXIfQlPPDQUmRGLmRzDfp3j0wpte4", worksheet_name="Suivi Test"):
         """
         Upload an Excel file to specific Google Sheets ID and worksheet
         """
         try:
-            # Load credentials from google.json file
-            if not os.path.exists(credentials_path):
-                print("Error: google.json file not found. Please add your service account credentials.")
+            # Get credentials from Streamlit secrets
+            try:
+                credentials_dict = dict(st.secrets["google_service_account"])
+            except KeyError:
+                print("Error: google_service_account not found in secrets. Please add your service account credentials to secrets.toml")
                 return False
             
             # Authenticate with service account
-            if not self.authenticate_with_service_account(credentials_path):
+            if not self.authenticate_with_service_account(credentials_dict):
                 print("Error: Failed to authenticate with Google Sheets")
                 return False
             
