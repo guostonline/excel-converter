@@ -53,7 +53,7 @@ class GoogleSheetsService:
             st.error(f"Authentication failed: {str(e)}")
             return False
     
-    def upload_quali_nv_to_google_sheets(self, excel_path="excel/finale_jour.xlsx", spreadsheet_id="1cRNqohML-mZ2mMqXIfQlPPDQUmRGLmRzDfp3j0wpte4", worksheet_name="quali SOM VMM", credentials_path=st.secrets["google_credentials"]):
+    def upload_quali_nv_to_google_sheets(self, excel_path="excel/finale_jour.xlsx", spreadsheet_id="1cRNqohML-mZ2mMqXIfQlPPDQUmRGLmRzDfp3j0wpte4", worksheet_name="quali SOM VMM", credentials_path=st.secrets["google_service_account"]):
         """
         Upload QUALI NV sheet data to specific Google Sheets ID and worksheet
         """
