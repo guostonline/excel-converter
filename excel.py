@@ -63,8 +63,8 @@ class Excel:
         sheet_ranges_quali['G1'] = "TSM"
         sheet_ranges_quali['H1'] = "RAF TSM"
         sheet_ranges_quali['I1'] = "RAF ACM"
-        sheet_ranges_quali['K21'] = "CHAKIB ELFIL"
-        sheet_ranges_quali['K10'] = "BOUTMEZGUINE EL MOSTAFA"
+        sheet_ranges_quali['A21'] = "CHAKIB ELFIL"
+        sheet_ranges_quali['A10'] = "BOUTMEZGUINE EL MOSTAFA"
         # Calculate RAF TSM using cell values instead of cell objects
        
             # Compute RAF TSM = (TSM - TSM * H%) / rest_days
