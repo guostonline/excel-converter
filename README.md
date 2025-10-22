@@ -133,7 +133,7 @@ excel-converter/
 1. Create a Google Cloud Project
 2. Enable Google Sheets API
 3. Create a Service Account
-4. Download credentials as `google.json`
+4. Add credentials to Streamlit secrets as `[google_service_account]` (Streamlit Cloud: App Settings → Secrets)
 5. Share your target Google Sheet with the service account email
 
 ## 🚨 Security Features
@@ -147,8 +147,9 @@ excel-converter/
 ### Common Issues
 
 1. **Google Sheets Upload Failed**
-   - Verify `google.json` credentials file exists
-   - Check if Google Sheet is shared with service account
+   - Verify Streamlit secrets contain a `[google_service_account]` section with full JSON fields (e.g., `type`, `project_id`, `private_key`, `client_email`, `token_uri`)
+   - In Streamlit Cloud, set secrets via App Settings → Secrets (local `secrets.toml` is not deployed automatically)
+   - Check if the Google Sheet is shared with the service account email
    - Ensure Google Sheets API is enabled
 
 2. **Excel Processing Errors**

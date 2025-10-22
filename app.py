@@ -208,7 +208,7 @@ def excel_converter_section():
                         sheets_info = " | ".join(uploaded_sheets)
                         st.warning(f"⚠️ Partially uploaded: {sheets_info}. Some data failed to upload.")
                     else:
-                        st.error("❌ Failed to upload data to Google Sheets. Check your google.json credentials.")
+                        st.error("❌ Failed to upload data to Google Sheets. Ensure Streamlit secrets are configured (google_service_account) in Streamlit Cloud settings.")
                         
                 except Exception as e:
                     st.error(f"❌ Google Sheets upload failed: {str(e)}")

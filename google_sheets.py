@@ -14,6 +14,17 @@ class GoogleSheetsService:
     def authenticate_with_service_account(self, credentials_json):
         """Authenticate using service account credentials JSON"""
         try:
+            # Helper to validate required fields in credentials dict
+            def _validate_credentials_dict(creds: dict) -> bool:
+                required_keys = ['type', 'project_id', 'private_key', 'client_email', 'token_uri']
+                missing = [k for k in required_keys if k not in creds or not creds.get(k)]
+                if missing:
+                    st.error(
+                        "google_service_account secrets are incomplete. Missing: " + ", ".join(missing)
+                    )
+                    return False
+                return True
+
             # Parse credentials from JSON string or file
             if isinstance(credentials_json, str):
                 if os.path.isfile(credentials_json):
@@ -28,6 +39,8 @@ class GoogleSheetsService:
                 else:
                     # It's a JSON string
                     credentials_dict = json.loads(credentials_json)
+                    if not _validate_credentials_dict(credentials_dict):
+                        return False
                     credentials = Credentials.from_service_account_info(
                         credentials_dict,
                         scopes=[
@@ -37,6 +50,8 @@ class GoogleSheetsService:
                     )
             else:
                 # It's already a dict
+                if not _validate_credentials_dict(credentials_json):
+                    return False
                 credentials = Credentials.from_service_account_info(
                     credentials_json,
                     scopes=[
