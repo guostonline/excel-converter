@@ -110,11 +110,14 @@ class Excel:
         sheet_ranges_quanti['D1'] = "OBJ"
         sheet_ranges_quanti['E1'] = "Percent"
         sheet_ranges_quanti['F1'] = "REAL 2025"
+
         sheet_ranges_quanti['G1'] = "H 2024"
         sheet_ranges_quanti['H1'] = "H %"
         sheet_ranges_quanti['I1'] = "EnCours"
         sheet_ranges_quanti['J1'] = "OBJ MOIS"
         sheet_ranges_quanti['K1'] = "RAF"
+        sheet_ranges_quanti['K21'] = "CHAKIB ELFIL"
+        sheet_ranges_quanti['K10'] = "BOUTMEZGUINE EL MOSTAFA"
         
 
         for i in range(sheet_ranges_quanti.max_row):
