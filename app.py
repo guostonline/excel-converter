@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import tempfile
 import shutil
+import zipfile
 from excel import Excel
 import json
 import pandas as pd
@@ -88,6 +89,14 @@ def excel_converter_section():
                     tmp_file.write(uploaded_file.getvalue())
                     temp_path = tmp_file.name
                 
+                # Validate the uploaded file is a proper .xlsx (zip-based)
+                if not zipfile.is_zipfile(temp_path):
+                    st.error(
+                        "The uploaded file is not a valid .xlsx (Excel Open XML). If your file is .xls or corrupted, please export/save it as .xlsx and try again."
+                    )
+                    # Stop processing for invalid file
+                    return
+
                 # Initialize Excel processor
                 excel_processor = Excel(temp_path, rest_days=jour_rest)
                 

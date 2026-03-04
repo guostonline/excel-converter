@@ -47,9 +47,9 @@ class Excel:
         wb = load_workbook(self.path)
         sheet_ranges_quali = wb["QUALI NV"]
         sheet_ranges_quali.unmerge_cells("E1:K2")
-        sheet_ranges_quali.delete_rows(1, 9)
+        sheet_ranges_quali.delete_rows(1, 7)
         sheet_ranges_quali.delete_rows(2, 4)
-        #sheet_ranges_quali.delete_rows(10, 1)
+        sheet_ranges_quali.delete_rows(10, 1)
         sheet_ranges_quali.delete_cols(1, 3)
         sheet_ranges_quali.delete_cols(2, 3)
         sheet_ranges_quali.delete_cols(3, 3)
@@ -63,8 +63,6 @@ class Excel:
         sheet_ranges_quali['G1'] = "TSM"
         sheet_ranges_quali['H1'] = "RAF TSM"
         sheet_ranges_quali['I1'] = "RAF ACM"
-        sheet_ranges_quali['A23'] = "CHAKIB ELFIL"
-        sheet_ranges_quali['A12'] = "BOUTMEZGUINE EL MOSTAFA"
         # Calculate RAF TSM using cell values instead of cell objects
        
             # Compute RAF TSM = (TSM - TSM * H%) / rest_days
@@ -103,9 +101,9 @@ class Excel:
         sheet_ranges_quanti.delete_cols(10, 1) 
         #delete rowsre
         sheet_ranges_quanti.delete_rows(1, 8)
-        sheet_ranges_quanti.delete_rows(2, 48)
-        #sheet_ranges_quanti.delete_rows(154, 8)
-        sheet_ranges_quanti.delete_rows(186, 14)
+        sheet_ranges_quanti.delete_rows(2, 32)
+        sheet_ranges_quanti.delete_rows(154, 8)
+        sheet_ranges_quanti.delete_rows(170, 14)
         sheet_ranges_quanti['A1'] = "Vendeur"
         sheet_ranges_quanti['B1'] = "Famille"
         sheet_ranges_quanti['C1'] = "REAL"
